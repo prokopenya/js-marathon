@@ -44,7 +44,8 @@ function renderHPLife(person) {
 }
 
 function renderProgressbarHP(person) {
-    person.elProgressbar.style.width = character.damageHP + '%';
+    console.log(person.elProgressbar.style.width);
+    person.elProgressbar.style.width = person.damageHP + '%';
 }
 
 function changeHP(count, person) {
