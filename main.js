@@ -1,4 +1,5 @@
 const $btn = document.getElementById('btn-kick');
+const $btnKickEnemy = document.getElementById('btn-kick-enemy');
 
 const character = {
     name: 'Pickachu',
@@ -22,6 +23,11 @@ $btn.addEventListener('click', function (){
     changeHP(random(20), enemy);
 });
 
+$btnKickEnemy.addEventListener('click', function (){
+    kickEnemy(random(20), enemy)
+    console.log('Kick enemy');
+});
+
 function init() {
     console.log('Start Game!');
     renderHP(character);
@@ -34,7 +40,7 @@ function renderHP(person) {
 }
 
 function renderHPLife(person) {
-    person.elHP.innerText = character.damageHP + ' / ' + character.defaultHP;
+    person.elHP.innerText = person.damageHP + ' / ' + person.defaultHP;
 }
 
 function renderProgressbarHP(person) {
@@ -55,6 +61,10 @@ function changeHP(count, person) {
 
 function random(num) {
     return Math.ceil(Math.random() * num);
+}
+
+function kickEnemy(count, person) {
+    changeHP(count, person);
 }
 
 init();
