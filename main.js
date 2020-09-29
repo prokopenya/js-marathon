@@ -7,11 +7,11 @@ const character = {
     damageHP: 100,
     elHP: document.getElementById('health-character'),
     elProgressbar: document.getElementById('progressbar-character'),
-    changeHP: changeHP,
-    renderHPLife: renderHPLife,
-    renderHP: renderHP,
-    renderProgressbarHP: renderProgressbarHP,
-    kickEnemy: kickEnemy,
+    changeHP,
+    renderHPLife,
+    renderHP,
+    renderProgressbarHP,
+    kickEnemy,
 }
 
 const enemy = {
@@ -20,10 +20,10 @@ const enemy = {
     damageHP: 100,
     elHP: document.getElementById('health-enemy'),
     elProgressbar: document.getElementById('progressbar-enemy'),
-    changeHP: changeHP,
-    renderHPLife: renderHPLife,
-    renderHP: renderHP,
-    renderProgressbarHP: renderProgressbarHP,
+    changeHP,
+    renderHPLife,
+    renderHP,
+    renderProgressbarHP,
 }
 
 $btn.addEventListener('click', function (){
