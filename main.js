@@ -8,15 +8,14 @@ function $getElementById(id) {
 
 const character = {
     name: 'Pickachu',
-    defaultHP: 100,
-    damageHP: 100,
+    defaultHP: 170,
+    damageHP: 170,
     elHP: $getElementById('health-character'),
     elProgressbar: $getElementById('progressbar-character'),
     changeHP,
     renderHPLife,
     renderHP,
     renderProgressbarHP,
-
 }
 
 const enemy = {
@@ -58,7 +57,7 @@ function renderHPLife() {
 }
 
 function renderProgressbarHP() {
-    this.elProgressbar.style.width = this.damageHP + '%';
+    this.elProgressbar.style.width = (this.damageHP * 100) / this.defaultHP + '%'
 }
 
 function changeHP(count) {
@@ -68,7 +67,7 @@ function changeHP(count) {
     this === enemy ? generateLog(this, character, count) : generateLog(this, enemy, count);
 
     if (this.damageHP <= count) {
-        this,damageHP = 0;
+        this.damageHP = 0;
         alert('Бедный ' + this.name + ' проиграл бой!');
         $btn.disabled = true;
     }
