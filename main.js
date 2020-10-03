@@ -6,29 +6,35 @@ function $getElementById(id) {
     return document.getElementById(id);
 }
 
-const character = {
-    name: 'Pickachu',
-    defaultHP: 170,
-    damageHP: 170,
-    elHP: $getElementById('health-character'),
-    elProgressbar: $getElementById('progressbar-character'),
+let pokemon = {
+    name: 'abstract_pokemon',
+    defaultHP: 100,
+    damageHP: 100,
     changeHP,
     renderHPLife,
     renderHP,
     renderProgressbarHP,
 }
 
-const enemy = {
-    name: 'Charmander',
-    defaultHP: 100,
-    damageHP: 100,
-    elHP: $getElementById('health-enemy'),
-    elProgressbar: $getElementById('progressbar-enemy'),
-    changeHP,
-    renderHPLife,
-    renderHP,
-    renderProgressbarHP,
-}
+let createCharacter = function() {
+    return Object.assign(Object.create(pokemon), {
+        name: 'Pickachu',
+        defaultHP: 170,
+        damageHP: 170,
+        elHP: $getElementById('health-character'),
+        elProgressbar: $getElementById('progressbar-character'),
+    });
+};
+
+let createEnemy = function() {
+    return Object.assign(Object.create(pokemon), {
+        name: 'Charmander',
+        defaultHP: 100,
+        damageHP: 100,
+        elHP: $getElementById('health-enemy'),
+        elProgressbar: $getElementById('progressbar-enemy'),
+    });
+};
 
 $btn.addEventListener('click', function (){
     console.log('Kick');
@@ -42,12 +48,19 @@ $btnKickEnemy.addEventListener('click', function (){
 });
 
 function init() {
+    console.log('init');
+    character = createCharacter();
+    enemy = createEnemy();
+}
+
+function startGame() {
     console.log('Start Game!');
     character.renderHP();
     enemy.renderHP();
 }
 
 function renderHP() {
+    console.log(this);
     this.renderHPLife();
     this.renderProgressbarHP();
 }
@@ -110,8 +123,8 @@ function generateLog(firstPerson, secondPerson, count) {
 
 }
 
-function random(num) {
-    return Math.ceil(Math.random() * num);
-}
+const random = (num) =>  Math.ceil(Math.random() * num);
 
 init();
+
+startGame();
