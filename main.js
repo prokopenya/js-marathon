@@ -2,11 +2,13 @@ const $btn = $getElementById('btn-kick');
 const $btnKickEnemy = $getElementById('btn-kick-enemy');
 const $logs = document.querySelector('#logs');
 
+const MAX_CLICK_BUTTON = 6;
+
 function $getElementById(id) {
     return document.getElementById(id);
 }
 
-let pokemon = {
+const pokemon = {
     name: 'abstract_pokemon',
     defaultHP: 100,
     damageHP: 100,
@@ -16,7 +18,7 @@ let pokemon = {
     renderProgressbarHP,
 }
 
-let createCharacter = function() {
+const createCharacter = function() {
     return Object.assign(Object.create(pokemon), {
         name: 'Pickachu',
         defaultHP: 170,
@@ -26,7 +28,7 @@ let createCharacter = function() {
     });
 };
 
-let createEnemy = function() {
+const createEnemy = function() {
     return Object.assign(Object.create(pokemon), {
         name: 'Charmander',
         defaultHP: 100,
@@ -36,14 +38,33 @@ let createEnemy = function() {
     });
 };
 
+function counter(count = 1) {
+    return function () {
+        console.log(count);
+        console.log(`Осталось ${MAX_CLICK_BUTTON - count}`);
+        if (count === MAX_CLICK_BUTTON) {
+            this.disabled = true;
+        }
+        return count++;
+    }
+};
+
+const clickBtnCounter = counter();
+const clickEnemyCounter = counter();
+
 $btn.addEventListener('click', function (){
     console.log('Kick');
+    let clickCount = clickBtnCounter();
     character.changeHP(random(20));
     enemy.changeHP(random(20));
+
 });
+
+//$btn.addEventListener('click',  clickCounter());
 
 $btnKickEnemy.addEventListener('click', function (){
     console.log('Kick enemy');
+    let clickCount = clickEnemyCounter();
     enemy.changeHP(random(20));
 });
 
@@ -60,7 +81,6 @@ function startGame() {
 }
 
 function renderHP() {
-    console.log(this);
     this.renderHPLife();
     this.renderProgressbarHP();
 }
