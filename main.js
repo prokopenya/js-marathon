@@ -1,8 +1,8 @@
 const $btn = $getElementById('btn-kick');
 const $btnKickEnemy = $getElementById('btn-kick-enemy');
 const $logs = document.querySelector('#logs');
-
-const MAX_CLICK_BUTTON = 6;
+const $btnCounter = document.querySelector('#btn-kick #counter');
+const $btnKickEnemyCounter = document.querySelector('#btn-kick-enemy #counter');
 
 function $getElementById(id) {
     return document.getElementById(id);
@@ -38,34 +38,39 @@ const createEnemy = function() {
     });
 };
 
-function counter(count = 1) {
+function counter(count = 1, clickLimit = 6) {
     return function () {
         console.log(count);
-        console.log(`Осталось ${MAX_CLICK_BUTTON - count}`);
-        if (count === MAX_CLICK_BUTTON) {
+        console.log(`Осталось ${clickLimit - count}`);
+        if (count === clickLimit) {
+            console.log(this);
             this.disabled = true;
         }
         return count++;
     }
 };
 
+function renderCounter(button, selector){
+    let clickCount = clickBtnCounter.call(button);
+    selector.innerText = clickCount;
+}
+
 const clickBtnCounter = counter();
 const clickEnemyCounter = counter();
 
 $btn.addEventListener('click', function (){
     console.log('Kick');
-    let clickCount = clickBtnCounter();
     character.changeHP(random(20));
     enemy.changeHP(random(20));
 
+    renderCounter(this, $btnCounter)
 });
-
-//$btn.addEventListener('click',  clickCounter());
 
 $btnKickEnemy.addEventListener('click', function (){
     console.log('Kick enemy');
-    let clickCount = clickEnemyCounter();
     enemy.changeHP(random(20));
+
+    renderCounter(this, $btnKickEnemyCounter)
 });
 
 function init() {
