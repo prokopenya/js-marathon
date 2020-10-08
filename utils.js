@@ -1,4 +1,7 @@
-export const random = (num) =>  Math.ceil(Math.random() * num);
+export const random = (max, min = 0) =>  {
+    const num = max - min;
+    return Math.ceil(Math.random()*num) + min;
+}
 
 export function generateLog(firstPerson, secondPerson, damage) {
 
@@ -34,4 +37,17 @@ export function generateLog(firstPerson, secondPerson, damage) {
     
     renderLog();
 
+};
+
+export function countBtn(clicksLeft = 6, button) {
+    let buttonInnerText = button.innerText;
+    button.innerText = `${buttonInnerText} [${clicksLeft}] `;
+
+    return function () {
+        clicksLeft -= 1;
+        button.innerText = `${buttonInnerText} [${clicksLeft}] `;
+        if(clicksLeft <= 0) {
+            button.disabled = true;
+        }
+    }
 };
