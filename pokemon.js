@@ -59,8 +59,6 @@ class Pokemon extends Selectors {
         elHP.textContent = current + ' / ' + total;
         bar.style.width = percent + '%';
     };
-
-
 }
 
 export default Pokemon;
