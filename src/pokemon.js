@@ -11,43 +11,44 @@ class Selectors {
 }
 
 class Pokemon extends Selectors {
-    constructor({name, hp, type, selectors, attacks = []}) {
+    constructor({id, name, hp, type, attacks = [], img, selectors}) {
         super(selectors);
+        this.id = id;
         this.name = name;
+        this.type = type;
         this.hp = {
             current: hp,
             total: hp,
         };
-        this.type = type;
         this.attacks = attacks;
+        this.elImg.src = img;
+        this.elName.textContent = name;
+        this.selectors = selectors;
 
         this.renderHP();
     }
 
     doHit = (opponent, damage) => {
-        const { hp, renderHp } = opponent;
+        const { hp, renderHP } = opponent;
         hp.current -= damage;
 
         if (hp.current <= 0) {
             hp.current = 0;
             if (opponent.selectors === 'player2') {
                 game.changeOpponent();
-                let newLvl = Number(this.lvl.textContent.slice(-1));
-                newLvl++;
-                this.lvl.textContent = 'Lv. ' + newLvl;
-                renderHp();
+                renderHP();
                 generateLog(this, opponent, damage);
                 return true;
             } else {
                 game.over();
-                renderHp();
+                renderHP();
                 generateLog(this, opponent, damage);
                 return false;
             }
         }
 
         renderHP();
-        generateLog(this, opponent, count);
+        generateLog(this, opponent, damage);
     };
 
     renderHP = () => {
