@@ -1,4 +1,3 @@
-import { pokemons } from './pokemons.js';
 import Pokemon from './pokemon.js';
 import { random, countBtn} from './utils.js';
 
