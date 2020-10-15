@@ -1,6 +1,9 @@
-import { pokemons } from './pokemons.js';
 import Pokemon from './pokemon.js';
-import { random, countBtn} from './utils.js';
+import {countBtn} from './utils.js';
+
+const URL_API = 'https://reactmarathon-api.netlify.app/api/';
+const GET_POKEMONS_METHOD = 'pokemons/';
+//const GET_DAMAGE_METHOD = `fight?player1id=${player1}&attackId=${hit}&player2id=${player2}`;
 
 class Selectors {
     constructor() {
@@ -14,9 +17,29 @@ class Game extends Selectors {
         super();
     };
 
-    begin = () => {
+    getPokemons = async (query = '') => {
+        const responce = await fetch(`${URL_API}${GET_POKEMONS_METHOD}${query}`);
+        const body = responce.json();
+        console.log(body);
+        return body;
+    }
+
+    getDamage = async (player1, player2, hit) => {
+        const responce = await fetch(`https://reactmarathon-api.netlify.app/api/fight?player1id=${player1}&attackId=${hit}&player2id=${player2}`);
+        const body = responce.json();
+        return body;
+    }
+
+    doHit = async (btn) => {
+        const damage = await this.getDamage(this.player1.id, this.player2.id, btn.id);
+        console.log(damage);
+        !this.player1.doHit(this.player2, damage.kick.player2) &&
+            this.player2.doHit(this.player1, damage.kick.player1);
+    }
+    begin = async () => {
         this.playground.textContent = '';
         this.logDiv.textContent = '';
+        const pokemons = await this.getPokemons();
         pokemons.forEach(item => {
             const { name, img } = item;
             const pokemon = document.createElement('div');
@@ -28,7 +51,6 @@ class Game extends Selectors {
                     <h2 class="name">${name}</h2>
                 </div>
             `;
-            console.log(pokemon);
             pokemon.addEventListener('click', () => {
                 this.start(name);
             });
@@ -37,19 +59,21 @@ class Game extends Selectors {
 
     };
 
-    start = (name) => {
+    start = async (name) => {
         this.playground.textContent = '';
 
-        let p1 = pokemons.find(item => item.name === name);
-        let p2 = pokemons[random(pokemons.length - 1)];
+        const p1 = await this.getPokemons(`?name=${name}`);
+        const p2 = await this.getPokemons('?random=true');
 
         this.playground.appendChild(this.pokemon('player1'));
-        this.playground.appendChild(this.pokemon('player2'));
         this.playground.appendChild(this.pokemon('control'));
+        this.playground.appendChild(this.pokemon('player2'));
         this.control = document.querySelector('.control');
 
         this.player1 = this.createPlayer(p1, 'player1');
         this.player2 = this.createPlayer(p2, 'player2');
+
+        document.querySelectorAll('.pokemon').forEach(item => { item.style.width = '180px'; });
 
         this.attacks();
     };
@@ -61,7 +85,7 @@ class Game extends Selectors {
             pokemon.className = 'control';
             return pokemon;
         };
-
+        console.log(pokemon);
         pokemon.className = `pokemon ${player}`;
         pokemon.innerHTML = `
             <span class="lvl">Lv. 1</span>
@@ -87,17 +111,14 @@ class Game extends Selectors {
             const btnCount = countBtn(item.maxCount, btn);
             btn.addEventListener('click', () => {
                 btnCount();
-                 const cb = () => { this.player2.hit(this.player1, this.player2.attacks[0]) };
-                 !this.player1.hit(this.player2, item) && cb();
-                 this.player2.renderHP();
-                //this.player2.changeHP(random(20));
+                this.doHit(item);
             });
             this.control.appendChild(btn);
         });
     };
 
-    changeOpponent = () => {
-        let p2 = pokemons[random(pokemons.length - 1)];
+    changeOpponent = async () => {
+        const p2 = await this.getPokemons('?random=true');
         this.player2 = this.createPlayer(p2, 'player2');
     };
 
